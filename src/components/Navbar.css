@@ -1,0 +1,185 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
+}
+
+/* Tema claro */
+.navbar.light {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Tema oscuro */
+.navbar.dark {
+  background: #1e1e2f;
+  color: #f0f0f0;
+}
+
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  white-space: nowrap;
+}
+
+.navbar-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Botón de tema mejorado */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem; /* Ajusta tamaño según prefieras */
+  cursor: pointer;
+  padding: 0.5rem;
+  color: inherit; /* Hereda el color de la navbar (blanco) */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}
+
+/* Hamburguesa - líneas blancas siempre */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 25px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.hamburger span {
+  width: 30px;
+  height: 3px;
+  background: white; /* Forzamos blanco para que siempre se vea */
+  border-radius: 3px;
+  transition: all 0.3s linear;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Enlaces del menú */
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-links li {
+  margin-left: 1.5rem;
+}
+
+.navbar-links a {
+  color: inherit;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.navbar-links a:hover {
+  background-color: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.navbar-links a.active {
+  background-color: rgba(255,255,255,0.3);
+  font-weight: bold;
+  border-bottom: 3px solid white;
+}
+
+.theme-icon {
+  display: inline-block;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 1rem;
+    position: relative;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    /* Fondo sólido que combine con el tema */
+    background: inherit; /* Hereda el fondo del navbar (gradiente o color sólido) */
+    padding: 1rem 0;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+  }
+
+  /* Para tema oscuro, aseguramos que el fondo sea sólido (por si hereda mal) */
+  .navbar.dark .navbar-links {
+    background: #1e1e2f; /* Mismo color que la navbar oscura */
+  }
+
+  .navbar-links.open {
+    display: flex;
+  }
+
+  .navbar-links li {
+    margin: 0.5rem 0;
+    text-align: center;
+  }
+
+  .navbar-links a {
+    display: block;
+    padding: 0.75rem;
+    color: white; /* Aseguramos texto blanco */
+  }
+
+  .navbar-right {
+    gap: 0.5rem;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+  }
+}
