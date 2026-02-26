@@ -9,13 +9,16 @@ function IngresosPage() {
   const [descripcion, setDescripcion] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+
   useEffect(() => {
     cargarIngresos();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [API_BASE]);
 
   const cargarIngresos = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/ingresos');
+      const res = await axios.get(`${API_BASE}/ingresos`);
       setIngresos(res.data);
     } catch (error) {
       console.error('Error al cargar ingresos:', error);
@@ -27,7 +30,7 @@ function IngresosPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://127.0.0.1:8000/ingresos', {
+      await axios.post(`${API_BASE}/ingresos`, {
         monto: parseFloat(monto),
         description: descripcion
       });
@@ -112,7 +115,7 @@ function IngresosPage() {
   );
 }
 
-// Función que retorna estilos según el tema
+// Función que retorna estilos según el tema (sin cambios)
 const getStyles = (theme) => {
   const isDark = theme === 'dark';
 

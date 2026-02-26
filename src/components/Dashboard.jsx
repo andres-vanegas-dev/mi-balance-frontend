@@ -15,14 +15,17 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Definir la URL base de la API
+  const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [ingresosRes, gastosRes, balanceRes, recordatoriosRes] = await Promise.all([
-          axios.get("http://127.0.0.1:8000/ingresos"),
-          axios.get("http://127.0.0.1:8000/gastos"),
-          axios.get("http://127.0.0.1:8000/balance"),
-          axios.get("http://127.0.0.1:8000/recordatorios")
+          axios.get(`${API_BASE}/ingresos`),
+          axios.get(`${API_BASE}/gastos`),
+          axios.get(`${API_BASE}/balance`),
+          axios.get(`${API_BASE}/recordatorios`)
         ]);
         setIngresos(ingresosRes.data);
         setGastos(gastosRes.data);
@@ -36,14 +39,14 @@ function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [API_BASE]); // Añadimos API_BASE como dependencia por si cambia (no debería)
 
   const handleToggleCompletado = async (id, completadoActual) => {
     try {
-      await axios.patch(`http://127.0.0.1:8000/recordatorios/${id}`, {
+      await axios.patch(`${API_BASE}/recordatorios/${id}`, {
         completado: !completadoActual
       });
-      const res = await axios.get("http://127.0.0.1:8000/recordatorios");
+      const res = await axios.get(`${API_BASE}/recordatorios`);
       setRecordatorios(res.data);
     } catch (err) {
       console.error("Error al actualizar recordatorio:", err);
@@ -54,8 +57,8 @@ function Dashboard() {
   const handleDeleteRecordatorio = async (id) => {
     if (!window.confirm('¿Eliminar este recordatorio?')) return;
     try {
-      await axios.delete(`http://127.0.0.1:8000/recordatorios/${id}`);
-      const res = await axios.get("http://127.0.0.1:8000/recordatorios");
+      await axios.delete(`${API_BASE}/recordatorios/${id}`);
+      const res = await axios.get(`${API_BASE}/recordatorios`);
       setRecordatorios(res.data);
     } catch (err) {
       console.error('Error al eliminar recordatorio:', err);
@@ -219,7 +222,7 @@ function Dashboard() {
   );
 }
 
-// Función que retorna estilos según el tema
+// Función que retorna estilos según el tema (sin cambios)
 const getStyles = (theme) => {
   const isDark = theme === 'dark';
   

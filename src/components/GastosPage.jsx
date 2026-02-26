@@ -10,6 +10,8 @@ function GastosPage() {
   const [descripcion, setDescripcion] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+
   const categorias = [
     'Comida',
     'Transporte',
@@ -23,11 +25,12 @@ function GastosPage() {
 
   useEffect(() => {
     cargarGastos();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [API_BASE]);
 
   const cargarGastos = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/gastos');
+      const res = await axios.get(`${API_BASE}/gastos`);
       setGastos(res.data);
     } catch (error) {
       console.error('Error al cargar gastos:', error);
@@ -38,7 +41,7 @@ function GastosPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://127.0.0.1:8000/gastos', {
+      await axios.post(`${API_BASE}/gastos`, {
         monto: parseFloat(monto),
         categoria,
         description: descripcion
@@ -140,7 +143,7 @@ function GastosPage() {
   );
 }
 
-// Función que retorna estilos según el tema
+// Función que retorna estilos según el tema (sin cambios)
 const getStyles = (theme) => {
   const isDark = theme === 'dark';
 
@@ -193,7 +196,7 @@ const getStyles = (theme) => {
     button: {
       padding: '12px',
       fontSize: '16px',
-      backgroundColor: '#dc3545', // rojo para gastos (diferente del verde de ingresos)
+      backgroundColor: '#dc3545',
       color: 'white',
       border: 'none',
       borderRadius: '4px',

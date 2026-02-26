@@ -10,13 +10,16 @@ function RecordatoriosPage() {
   const [monto, setMonto] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const API_BASE = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+
   useEffect(() => {
     cargarRecordatorios();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [API_BASE]);
 
   const cargarRecordatorios = async () => {
     try {
-      const res = await axios.get('http://127.0.0.1:8000/recordatorios');
+      const res = await axios.get(`${API_BASE}/recordatorios`);
       // Ordenar por fecha
       const ordenados = res.data.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
       setRecordatorios(ordenados);
@@ -29,7 +32,7 @@ function RecordatoriosPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post('http://127.0.0.1:8000/recordatorios', {
+      await axios.post(`${API_BASE}/recordatorios`, {
         titulo,
         fecha,
         monto: monto ? parseFloat(monto) : null,
@@ -49,7 +52,7 @@ function RecordatoriosPage() {
 
   const handleToggleCompletado = async (id, completadoActual) => {
     try {
-      await axios.patch(`http://127.0.0.1:8000/recordatorios/${id}`, {
+      await axios.patch(`${API_BASE}/recordatorios/${id}`, {
         completado: !completadoActual
       });
       await cargarRecordatorios();
@@ -62,7 +65,7 @@ function RecordatoriosPage() {
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar este recordatorio?')) return;
     try {
-      await axios.delete(`http://127.0.0.1:8000/recordatorios/${id}`);
+      await axios.delete(`${API_BASE}/recordatorios/${id}`);
       await cargarRecordatorios();
     } catch (error) {
       console.error('Error al eliminar recordatorio:', error);
@@ -166,7 +169,7 @@ function RecordatoriosPage() {
   );
 }
 
-// Función que retorna estilos según el tema
+// Función que retorna estilos según el tema (sin cambios)
 const getStyles = (theme) => {
   const isDark = theme === 'dark';
 
@@ -243,7 +246,7 @@ const getStyles = (theme) => {
       width: '20px',
       height: '20px',
       cursor: 'pointer',
-      accentColor: '#007bff', // Color del checkbox en modo claro (en oscuro se ve bien)
+      accentColor: '#007bff',
     },
     itemContent: {
       flex: 1,
